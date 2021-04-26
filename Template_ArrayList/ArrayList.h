@@ -177,7 +177,8 @@ public:
      * You are not allowed to use standard algorithms from algorithm header.
      */
     void sort() {
-        int relative, i, j;
+        T relative;
+        int i, j;
             for (i = 1; i < _size; i++)
             {
                 relative = _elems[i];
