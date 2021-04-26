@@ -12,7 +12,7 @@ int main () {
     array.add(4, -5);
     array.remove(1);
 
-    for (int i = 0; i < array.size(); ++i) {
+    for (int i = 0; i < array.size() + 1; ++i) {
         std::cout << array[i] << ", ";
     }
     std::cout << "\b\b " << std::endl << std::endl;
