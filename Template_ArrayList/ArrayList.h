@@ -136,13 +136,7 @@ public:
             _elems[i] = _elems[i + 1];
         }
 
-        // Removes the leftover space in array
-        // after movement of elements
-        // 1 space to the left
-        _elems[_size] = NULL;
-
         _size -= 1;
-        
     }
 
     // Returns the number of elements stored
