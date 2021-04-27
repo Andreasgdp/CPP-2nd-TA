@@ -30,7 +30,7 @@ public:
     *
     * @param c ArrayList to be copied
     */
-    ArrayList(const ArrayList<T>& c){
+    ArrayList(const ArrayList<T>& c) {
         _size = c._size;
         _reserved = c._reserved;
 
@@ -177,8 +177,7 @@ public:
         if (_size == _reserved)
             extendStorage();
 
-        for (int i = _size + 1; i > idx; --i)
-        {
+        for (int i = _size + 1; i > idx; --i) {
             _elems[i] = _elems[i - 1];
         }
 
@@ -217,8 +216,7 @@ public:
     * @param idx desired index of element
     */
     void remove(int idx) {
-        for (int i = idx; i < _size; i++)
-        {
+        for (int i = idx; i < _size; i++) {
             _elems[i] = _elems[i + 1];
         }
 
@@ -285,8 +283,7 @@ public:
     void sort() {
         T relative;
         int i, j;
-            for (i = 1; i < _size; i++)
-            {
+            for (i = 1; i < _size; i++) {
                 relative = _elems[i];
                 j = i - 1;
 
@@ -312,19 +309,18 @@ public:
     */
     ArrayList<T> subArrayList(int fromIdx, int toIdx) const {
         if (fromIdx > toIdx) {
-            throw std::runtime_error("fromIdx is larger than toIdx");
+            throw std::invalid_argument("fromIdx is larger than toIdx");
         } else if (fromIdx == toIdx) {
-            throw std::runtime_error("The two indexes are the same");
+            throw std::invalid_argument("The two indexes are the same");
         } else if (fromIdx < 0 || toIdx < 0) {
-            throw std::runtime_error("An index is less than 0");
+            throw std::invalid_argument("An index is less than 0");
         } else if (fromIdx > _size || toIdx > _size) {
-            throw std::runtime_error("An index is greater than the size of the ArrayList");
+            throw std::invalid_argument("An index is greater than the size of the ArrayList");
         }
 
         ArrayList<T> array((toIdx - fromIdx) + 1);
 
-        for (int i = fromIdx, j = 0; i <= toIdx; ++i, ++j)
-        {
+        for (int i = fromIdx, j = 0; i <= toIdx; ++i, ++j) {
             array._elems[j] = _elems[i];
         }
 
