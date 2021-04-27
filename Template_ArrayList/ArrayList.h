@@ -320,12 +320,10 @@ public:
 
         ArrayList<T> array((toIdx - fromIdx) + 1);
 
-        for (int i = fromIdx, j = 0; i <= toIdx; ++i, ++j) {
-            array._elems[j] = _elems[i];
+        for (int i = fromIdx; i <= toIdx; ++i) {
+            array.add(_elems[i]);
         }
 
-        array._size = array._reserved;
-        
         return array;
     }
 
