@@ -152,21 +152,9 @@ public:
     void trimToSize() {
         _reserved = _size;
         T* temp = new T[_reserved];
-
-        for (int i = 0; i < _size; i++)
-        {
-            temp[i] = _elems[i];
-        }
-
+        std::move(_elems, _elems + _size, temp);
         delete[] _elems;
-        _elems = new T[_reserved];
-
-        for (int i = 0; i < _size; i++)
-        {
-            _elems[i] = temp[i];
-        }
-
-        delete[] temp;
+        _elems = temp;
     }
 
     /*
@@ -242,23 +230,12 @@ private:
      * but the functionality is needed).
      */
     void extendStorage() {
+        // Reserves 1 spot, if there are non reserved spots
         _reserved = (_reserved == 0) ? 1 : _reserved * 2;
         T* temp = new T[_reserved];
-
-        for (int i = 0; i < _size; i++)
-        {
-            temp[i] = _elems[i];
-        }
-
+        std::move(_elems, _elems + _size, temp);
         delete[] _elems;
-        _elems = new T[_reserved];
-
-        for (int i = 0; i < _size; i++)
-        {
-            _elems[i] = temp[i];
-        }
-
-        delete[] temp;
+        _elems = temp;
     }
 
     // Member variables
