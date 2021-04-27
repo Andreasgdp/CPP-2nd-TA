@@ -293,7 +293,7 @@ public:
                 while (j >= 0 && _elems[j] > relative)
                 {
                     _elems[j + 1] = _elems[j];
-                    j = j - 1;
+                    --j;
                 }
                 _elems[j + 1] = relative;
             }
