@@ -7,13 +7,29 @@ template <typename T>
 class ArrayList {
 
 public:
+
+    /** Initializes an empty ArrayList.
+    *
+    * No initial size is given.
+    */
     ArrayList() {
+        // If the user does not specify a size,
+        // it will be initialized as null
         _size = 0;
         _reserved = 0;
         _elems = nullptr;
     }
 
     // Copy constructor
+    /** Copies an Arraylist to create a new ArrayList.
+    *
+    * Takes attributes from ArrayList c
+    * and sets attributes of new object
+    * to the same. Reserves space in
+    * _elems, if need be.
+    *
+    * @param c ArrayList to be copied
+    */
     ArrayList(const ArrayList<T>& c){
         _size = c._size;
         _reserved = c._reserved;
@@ -22,13 +38,19 @@ public:
             _elems = new T[_reserved];
         }
 
-        for (int i = 0; i < _size; ++i)
-        {
-            _elems[i] = c._elems[i];
-        }
+        std::copy(c._elems, c._elems + c._size, _elems);
     }
 
     // Move constructor
+    /** Moves an Arraylist to create a new ArrayList.
+    *
+    * Takes a temporary (moved) ArrayList
+    * and sets attributes of new object
+    * to the same. Then cleans up the temporary
+    * ArrayList.
+    *
+    * @param c ArrayList to be moved
+    */
     ArrayList(ArrayList<T>&& c) {
         _elems = c._elems;
         _size = c._size;
@@ -41,12 +63,24 @@ public:
     }
 
     // Constructor with initialization of "initialized" elements
+    /** Initializes an ArrayList with given reserved space.
+    *
+    * Initializes a new ArrayList.
+    *
+    * @param initialized desired reserve size
+    */
     ArrayList(int initialized) {
         _size = 0;
         _reserved = initialized;
         _elems = new T[_reserved];
     }
 
+    /** Deconstructs object.
+    *
+    * Deconstructs object by deleting
+    * allocated space on heap.
+    *
+    */
     virtual ~ArrayList() {
         if (_reserved > 0) {
             delete[] _elems;
@@ -54,6 +88,15 @@ public:
     }
 
     // Copy assignment operator
+    /** Moves an Arraylist to overwride this.
+    *
+    * Takes a temporary (moved) ArrayList
+    * and sets attributes of new object
+    * to the same. Then cleans up the temporary
+    * ArrayList.
+    *
+    * @param a ArrayList to be moved
+    */
     ArrayList<T >& operator=(const ArrayList<T>& a) {
         if (_reserved > 0) {
             delete[] _elems;
@@ -65,15 +108,21 @@ public:
             _elems = new T[_reserved];
         }
 
-        for (int i = 0; i < _size; ++i)
-        {
-            _elems[i] = a._elems[i];
-        }
+        std::copy(a._elems, a._elems + a._size, _elems);
 
         return *this;
     }
 
     // Move assignment operator
+    /** Moves an Arraylist to overwride this.
+    *
+    * Takes a temporary (moved) ArrayList
+    * and sets attributes of new object
+    * to the same. Then cleans up the temporary
+    * ArrayList.
+    *
+    * @param a ArrayList to be moved
+    */
     ArrayList <T>& operator=(ArrayList <T>&& a) {
         if (_reserved > 0) {
             delete[] _elems;
@@ -90,7 +139,14 @@ public:
         return *this;
     }
 
-    // Add element to dynamic array
+    // Adds element to dynamic array
+    /** Adds element to dynamic array.
+    *
+    * Reserves more space in _elems if need be
+    * and adds the element to the array.
+    *
+    * @param element desired element to add
+    */
     void add(const T& element) {
         if (_size == _reserved)
             extendStorage();
@@ -106,6 +162,17 @@ public:
      * move all elements from _size to idx (reverse) one element to the right in the array
      * set _elems [idx] equal to the element to be inserted
      */
+    /** Inserts element to dynamic array at index.
+    *
+    * Inserts the element at placement "idx " in array and moves the remaining
+    * items by one place , restoring the old element at "idx ".
+    * Checks whether it is needed to extend the storage .
+    * Moves all elements from _size to idx (reverse) one element to the right in the array
+    * Sets _elems [idx] equal to the element to be inserted
+    *
+    * @param idx desired index of insertion
+    * @param element desired element to add
+    */
     void add(int idx, const T& element) {
         if (_size == _reserved)
             extendStorage();
@@ -117,19 +184,38 @@ public:
 
         _elems[idx] = element;
 
-        _size += 1;
+        ++_size;
     }
 
     // Get a const reference to the element at idx
+    /** Gets element at index.
+    *
+    * Get a const reference to the element at idx
+    *
+    * @param idx desired index of element
+    */
     const T& operator[](int idx) const { return _elems[idx]; }
 
     // Get a reference to the element at idx
+    /** Gets element at index.
+    *
+    * Get a reference to the element at idx
+    *
+    * @param idx desired index of element
+    */
     T& operator[](int idx) { return _elems[idx]; }
 
     /*
      * Removes the element at placement "idx " by moving all the remaining elements
      * by one place to the left in the array
      */
+    /** Removes element at index.
+    *
+    * Removes the element at placement "idx " by moving all the remaining elements
+    * by one place to the left in the array
+    *
+    * @param idx desired index of element
+    */
     void remove(int idx) {
         for (int i = idx; i < _size; i++)
         {
@@ -140,15 +226,35 @@ public:
     }
 
     // Returns the number of elements stored
+    /** Returns the number of elements stored.
+    *
+    * Returns the number of elements stored
+    *
+    */
     int size() const { return _size; }
 
     // Returns the number of items currently reserved inmemory
+    /** Returns the number of items currently reserved inmemory.
+    *
+    * Returns the number of items currently reserved inmemory.
+    *
+    */
     int reserved() const { return _reserved; }
 
     // Returns true if number of elements in array is zero
+    /** Returns true if number of elements in array is zero.
+    *
+    * Returns true if number of elements in array is zero.
+    *
+    */
     bool isEmpty() const { return (_size == 0) ? true : false; }
 
     // Trims the storage array to the exact number of elements stored.
+    /** Trims the storage array to the exact number of elements stored.
+    *
+    * Trims the storage array to the exact number of elements stored.
+    *
+    */
     void trimToSize() {
         // Sets the reserved size to be the same
         // as the number of elements in array
@@ -171,6 +277,11 @@ public:
      * Sorts the array using insertion sort (or another algorithm)
      * You are not allowed to use standard algorithms from algorithm header.
      */
+    /** Sorts the array using insertion sort.
+    *
+    * Sorts the array using insertion sort.
+    *
+    */
     void sort() {
         T relative;
         int i, j;
@@ -192,6 +303,13 @@ public:
     }
 
     // Returns a new ArrayList with elements from "fromIdx" index to "toIdx"
+    /** Returns a new ArrayList with elements from "fromIdx" index to "toIdx".
+    *
+    * Returns a new ArrayList with elements from "fromIdx" index to "toIdx".
+    *
+    * @param fromIdx desired first index
+    * @param toIdx desired second index
+    */
     ArrayList<T> subArrayList(int fromIdx, int toIdx) const {
         if (fromIdx > toIdx) {
             throw std::runtime_error("fromIdx is larger than toIdx");
@@ -216,6 +334,11 @@ public:
     }
 
     // Returns a new C style array (copy created with new) with all elements
+    /** Returns a new C style array (copy created with new) with all elements.
+    *
+    * Returns a new C style array (copy created with new) with all elements.
+    *
+    */
     T* toArray() {
 
         T* cArray = new T[_size];
@@ -239,6 +362,11 @@ private:
      * (Since this method is private, the method will only be used internally,
      * but the functionality is needed).
      */
+    /** Extends the reserved storage of _elems.
+    *
+    * Extends the reserved storage of _elems.
+    *
+    */
     void extendStorage() {
         // Reserves 1 spot, if there are non reserved else twice the size
         _reserved = (_reserved == 0) ? 1 : _reserved * 2;
