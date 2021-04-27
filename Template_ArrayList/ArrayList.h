@@ -216,11 +216,11 @@ public:
     * @param idx desired index of element
     */
     void remove(int idx) {
-        for (int i = idx; i < _size; i++) {
+        for (int i = idx; i < _size - 1; i++) {
             _elems[i] = _elems[i + 1];
         }
 
-        _size -= 1;
+        --_size;
     }
 
     // Returns the number of elements stored
