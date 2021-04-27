@@ -150,11 +150,21 @@ public:
 
     // Trims the storage array to the exact number of elements stored.
     void trimToSize() {
+        // Sets the reserved size to be the same
+        // as the number of elements in array
         _reserved = _size;
+        // Reserves space in a temporary variable.
         T* temp = new T[_reserved];
+        // Moves elements from active _elems to temporary list.
         std::move(_elems, _elems + _size, temp);
+        // Deletes _elems to make room for new data
+        // as only elements and not _reserved in _elems
+        // has been moved.
         delete[] _elems;
-        _elems = temp;
+        // Reserves space in _elems
+        _elems = new T[_reserved];
+        // Moves the elements from temp array to elems.
+        std::move(temp, temp + _size, _elems);
     }
 
     /*
@@ -230,12 +240,20 @@ private:
      * but the functionality is needed).
      */
     void extendStorage() {
-        // Reserves 1 spot, if there are non reserved spots
+        // Reserves 1 spot, if there are non reserved else twice the size
         _reserved = (_reserved == 0) ? 1 : _reserved * 2;
+        // Reserves space in a temporary variable.
         T* temp = new T[_reserved];
+        // Moves elements from active _elems to temporary list.
         std::move(_elems, _elems + _size, temp);
+        // Deletes _elems to make room for new data
+        // as only elements and not _reserved in _elems
+        // has been moved.
         delete[] _elems;
-        _elems = temp;
+        // Reserves space in _elems
+        _elems = new T[_reserved];
+        // Moves the elements from temp array to elems.
+        std::move(temp, temp + _size, _elems);
     }
 
     // Member variables
