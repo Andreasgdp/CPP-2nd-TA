@@ -70,6 +70,9 @@ public:
     * @param initialized desired reserve size
     */
     ArrayList(int initialized) {
+        if (initialized <= 0) {
+            throw std::invalid_argument("Index has to be larger than 0");
+        }
         _size = 0;
         _reserved = initialized;
         _elems = new T[_reserved];
@@ -174,6 +177,10 @@ public:
     * @param element desired element to add
     */
     void add(int idx, const T& element) {
+        if (idx <= 0) {
+            throw std::invalid_argument("Index has to be larger than 0");
+        }
+
         if (_size == _reserved)
             extendStorage();
 
@@ -193,7 +200,12 @@ public:
     *
     * @param idx desired index of element
     */
-    const T& operator[](int idx) const { return _elems[idx]; }
+    const T& operator[](int idx) const {
+        if (idx < 0 || idx > _size) {
+            throw std::invalid_argument("Index out of range");
+        }
+        return _elems[idx];
+    }
 
     // Get a reference to the element at idx
     /** Gets element at index.
@@ -202,7 +214,12 @@ public:
     *
     * @param idx desired index of element
     */
-    T& operator[](int idx) { return _elems[idx]; }
+    T& operator[](int idx) {
+        if (idx < 0 || idx > _size) {
+            throw std::invalid_argument("Index out of range");
+        }
+        return _elems[idx];
+    }
 
     /*
      * Removes the element at placement "idx " by moving all the remaining elements
@@ -216,6 +233,9 @@ public:
     * @param idx desired index of element
     */
     void remove(int idx) {
+        if (idx < 0 || idx > _size) {
+            throw std::invalid_argument("Index out of range");
+        }
         for (int i = idx; i < _size - 1; i++) {
             _elems[i] = _elems[i + 1];
         }
@@ -364,8 +384,8 @@ private:
     void extendStorage() {
         // Reserves 1 spot, if there are non reserved else twice the size
         _reserved = (_reserved == 0) ? 1 : _reserved * 2;
-        // Reserves space in a temporary variable.
-        T* temp = new T[_reserved];
+        // Reserves just space for elements in a temporary variable.
+        T* temp = new T[_size];
         // Moves elements from active _elems to temporary list.
         std::move(_elems, _elems + _size, temp);
         // Deletes _elems to make room for new data

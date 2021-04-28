@@ -97,6 +97,20 @@ int main () {
     }
     std::cout << "\b\b " << std::endl << std::endl;
 
+    std::cout << "-----------------------From here and down is our added tests----------------------- \n\n";
+
+
+    std::cout << "Test of isEmpty() \nsubArray2 should be empty, as its elements has been moved. subArray2 is empty (1): ";
+    std::cout << subArray2.isEmpty();
+    std::cout << std::endl << std::endl;
+
+    double* cArray = array.toArray();
+    std::cout << "C-style Array based on original array = ";
+    for (int i = 0; i < array.size(); ++i) {
+        std::cout << cArray[i] << ", ";
+    }
+    std::cout << "\b\b " << std::endl << std::endl;
+
     subArray3.sort();
     std::cout << "Sorted subArray3 = ";
     for (int i = 0; i < subArray3.size(); ++i) {
